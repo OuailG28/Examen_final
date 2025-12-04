@@ -17,7 +17,10 @@ class AuthService extends ChangeNotifier {
     _autoLogin();
   }
 
+<<<<<<< HEAD
  
+=======
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
   Future<void> _autoLogin() async {
     final prefs = await SharedPreferences.getInstance();
     final savedUsername = prefs.getString('saved_username');
@@ -29,7 +32,10 @@ class AuthService extends ChangeNotifier {
     }
   }
 
+<<<<<<< HEAD
   
+=======
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
   String? validateEmail(String email) {
     if (email.isEmpty) return 'L\'email ne peut pas être vide';
 
@@ -40,7 +46,10 @@ class AuthService extends ChangeNotifier {
     return null;
   }
 
+<<<<<<< HEAD
   
+=======
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
   String? validatePassword(String password) {
     if (password.isEmpty) return 'Le mot de passe ne peut pas être vide';
     if (password.length < 6) {
@@ -55,7 +64,10 @@ class AuthService extends ChangeNotifier {
     return null;
   }
 
+<<<<<<< HEAD
   
+=======
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
   String? validateUsername(String username) {
     if (username.isEmpty) return 'Le nom d\'utilisateur ne peut pas être vide';
     if (username.length < 3) {
@@ -70,24 +82,36 @@ class AuthService extends ChangeNotifier {
   Future<String?> updateProfile(String newEmail, String? newPassword) async {
     if (_currentUser == null) return 'Utilisateur non connecté';
 
+<<<<<<< HEAD
     
     final emailError = validateEmail(newEmail);
     if (emailError != null) return emailError;
 
     
+=======
+    final emailError = validateEmail(newEmail);
+    if (emailError != null) return emailError;
+
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
     if (_users.any(
       (u) => u.email == newEmail && u.username != _currentUser!.username,
     )) {
       return 'Cet email est déjà utilisé';
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
     if (newPassword != null && newPassword.isNotEmpty) {
       final passwordError = validatePassword(newPassword);
       if (passwordError != null) return passwordError;
     }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
     _users = _users.map((u) {
       if (u.username == _currentUser!.username) {
         return User(
@@ -101,7 +125,10 @@ class AuthService extends ChangeNotifier {
       return u;
     }).toList();
 
+<<<<<<< HEAD
     
+=======
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
     _currentUser = User(
       username: _currentUser!.username,
       email: newEmail,
@@ -112,7 +139,10 @@ class AuthService extends ChangeNotifier {
 
     await _saveUsers();
 
+<<<<<<< HEAD
     
+=======
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
     if (_rememberMe && newPassword != null && newPassword.isNotEmpty) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString('saved_password', newPassword);
@@ -127,7 +157,10 @@ class AuthService extends ChangeNotifier {
     final usersJson = prefs.getStringList('users') ?? [];
     _users = usersJson.map((json) => User.fromJson(jsonDecode(json))).toList();
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
     if (_users.isEmpty) {
       _users.add(
         User(username: 'demo', email: 'demo@example.com', password: 'Demo123'),
@@ -142,7 +175,10 @@ class AuthService extends ChangeNotifier {
     await prefs.setStringList('users', usersJson);
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
   Future<bool> login(
     String username,
     String password, {
@@ -157,7 +193,10 @@ class AuthService extends ChangeNotifier {
       _currentUser = user;
       _rememberMe = rememberMe;
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
       final prefs = await SharedPreferences.getInstance();
       if (rememberMe) {
         await prefs.setString('saved_username', username);
@@ -180,6 +219,7 @@ class AuthService extends ChangeNotifier {
     String email,
     String password,
   ) async {
+<<<<<<< HEAD
     
     final usernameError = validateUsername(username);
     if (usernameError != null) return usernameError;
@@ -193,6 +233,17 @@ class AuthService extends ChangeNotifier {
     if (passwordError != null) return passwordError;
 
     
+=======
+    final usernameError = validateUsername(username);
+    if (usernameError != null) return usernameError;
+
+    final emailError = validateEmail(email);
+    if (emailError != null) return emailError;
+
+    final passwordError = validatePassword(password);
+    if (passwordError != null) return passwordError;
+
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
     if (_users.any((u) => u.username == username)) {
       return 'Ce nom d\'utilisateur existe déjà';
     }
@@ -206,7 +257,10 @@ class AuthService extends ChangeNotifier {
     return null;
   }
 
+<<<<<<< HEAD
   
+=======
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
   Future<String?> resetPassword(String email) async {
     final user = _users.firstWhere(
       (u) => u.email == email,
@@ -217,8 +271,12 @@ class AuthService extends ChangeNotifier {
       return 'Aucun compte associé à cet email';
     }
 
+<<<<<<< HEAD
     
     return null; 
+=======
+    return null;
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
   }
 
   void logout() {
@@ -227,7 +285,10 @@ class AuthService extends ChangeNotifier {
     notifyListeners();
   }
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
   Future<String?> deleteAccount(String password) async {
     if (_currentUser == null) return 'Utilisateur non connecté';
 
@@ -247,6 +308,10 @@ class AuthService extends ChangeNotifier {
     _rememberMe = false;
     notifyListeners();
 
+<<<<<<< HEAD
     return null; 
+=======
+    return null;
+>>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
   }
 }
