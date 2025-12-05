@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../models/medicament.dart';
@@ -121,3 +122,23 @@ class MedicamentService extends ChangeNotifier {
     return ['Tous', ...types];
   }
 }
+=======
+import '../models/medicament.dart';
+import '../data/medicaments_data.dart';
+
+class MedicamentService {
+  List<Medicament> getAllMedicaments() {
+    return medicamentsData.map((data) => Medicament.fromJson(data)).toList();
+  }
+
+  List<Medicament> searchMedicaments(String query) {
+    if (query.isEmpty) return getAllMedicaments();
+
+    final lowerQuery = query.toLowerCase();
+    return getAllMedicaments().where((med) {
+      return med.nom.toLowerCase().contains(lowerQuery) ||
+          med.type.toLowerCase().contains(lowerQuery);
+    }).toList();
+  }
+}
+>>>>>>> 538c791 (finalisation de l'app par ouail)

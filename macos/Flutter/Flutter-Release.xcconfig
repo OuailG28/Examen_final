@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 #include "ephemeral/Flutter-Generated.xcconfig"
+=======
+#include "ephemeral/Flutter-Generated.xcconfig"
+>>>>>>> 538c791 (finalisation de l'app par ouail)

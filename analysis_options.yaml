@@ -1,1 +1,5 @@
+<<<<<<< HEAD
 include: package:flutter_lints/flutter.yaml
+=======
+include: package:flutter_lints/flutter.yaml
+>>>>>>> 538c791 (finalisation de l'app par ouail)

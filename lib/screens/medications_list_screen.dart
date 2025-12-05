@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../services/medicament_service.dart';
@@ -246,3 +247,137 @@ class _MedicationsListScreenState extends State<MedicationsListScreen> {
     );
   }
 }
+=======
+import 'package:flutter/material.dart';
+import '../services/medicament_service.dart';
+import '../models/medicament.dart';
+import 'medication_detail_screen.dart';
+
+class MedicationsListScreen extends StatefulWidget {
+  const MedicationsListScreen({super.key});
+
+  @override
+  State<MedicationsListScreen> createState() => _MedicationsListScreenState();
+}
+
+class _MedicationsListScreenState extends State<MedicationsListScreen> {
+  final _medicamentService = MedicamentService();
+  List<Medicament> _medicaments = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _medicaments = _medicamentService.getAllMedicaments();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          onPressed: () => Navigator.pop(context),
+        ),
+        title: const Text(
+          'Medication',
+          style: TextStyle(
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.edit_outlined, color: Colors.grey.shade700),
+            onPressed: () {},
+          ),
+          IconButton(
+            icon: Icon(Icons.star_border, color: Colors.grey.shade700),
+            onPressed: () {},
+          ),
+        ],
+      ),
+      body: Container(
+        color: Colors.white,
+        child: ListView.builder(
+          padding: const EdgeInsets.all(16),
+          itemCount: _medicaments.length,
+          itemBuilder: (context, index) {
+            final medicament = _medicaments[index];
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => MedicationDetailScreen(
+                      medicament: medicament,
+                    ),
+                  ),
+                );
+              },
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 12),
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey.shade200),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      width: 50,
+                      height: 50,
+                      decoration: BoxDecoration(
+                        color: Colors.orange.shade100,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Icon(
+                        Icons.medication,
+                        color: Colors.orange.shade600,
+                        size: 30,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            medicament.nom,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87,
+                            ),
+                          ),
+                          Text(
+                            medicament.type,
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey.shade600,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Text(
+                      'Take twice a day',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey.shade800,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        ),
+      ),
+    );
+  }
+}
+>>>>>>> 538c791 (finalisation de l'app par ouail)

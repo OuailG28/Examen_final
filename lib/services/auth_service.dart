@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
@@ -315,3 +316,121 @@ class AuthService extends ChangeNotifier {
 >>>>>>> 0a39d933e816449316ec0b437e93091ff5e31364
   }
 }
+=======
+import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+import '../models/user.dart';
+
+class AuthService extends ChangeNotifier {
+  User? _currentUser;
+  List<User> _users = [];
+
+  User? get currentUser => _currentUser;
+  bool get isLoggedIn => _currentUser != null;
+
+  AuthService() {
+    _loadUsers();
+  }
+
+  Future<String?> updateProfile(String newEmail, String? newPassword) async {
+    if (_currentUser == null) return 'Utilisateur non connecté';
+
+    if (_users.any(
+      (u) => u.email == newEmail && u.username != _currentUser!.username,
+    )) {
+      return 'Cet email est déjà utilisé';
+    }
+
+    if (newPassword != null &&
+        newPassword.isNotEmpty &&
+        newPassword.length < 6) {
+      return 'Le mot de passe doit contenir au moins 6 caractères';
+    }
+
+    _users = _users.map((u) {
+      if (u.username == _currentUser!.username) {
+        return User(
+          username: u.username,
+          email: newEmail,
+          password: newPassword != null && newPassword.isNotEmpty
+              ? newPassword
+              : u.password,
+        );
+      }
+      return u;
+    }).toList();
+
+    _currentUser = User(
+      username: _currentUser!.username,
+      email: newEmail,
+      password: newPassword != null && newPassword.isNotEmpty
+          ? newPassword
+          : _currentUser!.password,
+    );
+
+    await _saveUsers();
+    notifyListeners();
+    return null;
+  }
+
+  Future<void> _loadUsers() async {
+    final prefs = await SharedPreferences.getInstance();
+    final usersJson = prefs.getStringList('users') ?? [];
+    _users = usersJson.map((json) => User.fromJson(jsonDecode(json))).toList();
+
+    if (_users.isEmpty) {
+      _users.add(
+        User(username: 'demo', email: 'demo@example.com', password: 'demo123'),
+      );
+      await _saveUsers();
+    }
+  }
+
+  Future<void> _saveUsers() async {
+    final prefs = await SharedPreferences.getInstance();
+    final usersJson = _users.map((user) => jsonEncode(user.toJson())).toList();
+    await prefs.setStringList('users', usersJson);
+  }
+
+  Future<bool> login(String username, String password) async {
+    final user = _users.firstWhere(
+      (u) => u.username == username && u.password == password,
+      orElse: () => User(username: '', email: '', password: ''),
+    );
+
+    if (user.username.isNotEmpty) {
+      _currentUser = user;
+      notifyListeners();
+      return true;
+    }
+    return false;
+  }
+
+  Future<String?> register(
+    String username,
+    String email,
+    String password,
+  ) async {
+    if (_users.any((u) => u.username == username)) {
+      return 'Ce nom d\'utilisateur existe déjà';
+    }
+    if (_users.any((u) => u.email == email)) {
+      return 'Cet email est déjà utilisé';
+    }
+    if (password.length < 6) {
+      return 'Le mot de passe doit contenir au moins 6 caractères';
+    }
+
+    final newUser = User(username: username, email: email, password: password);
+    _users.add(newUser);
+    await _saveUsers();
+    return null;
+  }
+
+  void logout() {
+    _currentUser = null;
+    notifyListeners();
+  }
+}
+>>>>>>> 538c791 (finalisation de l'app par ouail)
